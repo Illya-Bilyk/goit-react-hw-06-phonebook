@@ -2,24 +2,13 @@ import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
 import { FormWrap, TitlePhone, TitleContact } from './App.styled';
-import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact, removeContact } from '../redux/contactSlice';
 
 export function App() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-
-  // const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
-
-  // const [contacts, setContacts] = useState(() => parsedContacts ?? []);
-  // const [filter, setFilter] = useState('');
-
-  // useEffect(() => {
-  //   const contactsLS = JSON.stringify(contacts);
-  //   localStorage.setItem('contacts', contactsLS);
-  // }, [contacts]);
+  const contacts = useSelector(state => state.contacts.items);
+  const filter = useSelector(state => state.contacts.filter);
 
   const handleSubmit = newContact => {
     contacts.find(contact => contact.name === newContact.name)
