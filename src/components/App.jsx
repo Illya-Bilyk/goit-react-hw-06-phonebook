@@ -3,27 +3,33 @@ import { ContactList } from './ContactList';
 import { Filter } from './Filter';
 import { FormWrap, TitlePhone, TitleContact } from './App.styled';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, removeContact } from '../redux/contactSlice';
 
 export function App() {
-  const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
 
-  const [contacts, setContacts] = useState(() => parsedContacts ?? []);
-  const [filter, setFilter] = useState('');
+  // const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
 
-  useEffect(() => {
-    const contactsLS = JSON.stringify(contacts);
-    localStorage.setItem('contacts', contactsLS);
-  }, [contacts]);
+  // const [contacts, setContacts] = useState(() => parsedContacts ?? []);
+  // const [filter, setFilter] = useState('');
+
+  // useEffect(() => {
+  //   const contactsLS = JSON.stringify(contacts);
+  //   localStorage.setItem('contacts', contactsLS);
+  // }, [contacts]);
 
   const handleSubmit = newContact => {
     contacts.find(contact => contact.name === newContact.name)
       ? alert(`This contact ${newContact.name} is already exist`)
-      : setContacts(prevContacts => [...prevContacts, newContact]);
+      : dispatch(addContact(newContact));
   };
 
   const deleteContact = contact => {
     const indexToDelete = contacts.findIndex(cont => cont.id === contact.id);
-    setContacts(contacts.filter((_, index) => index !== indexToDelete));
+    dispatch(removeContact(indexToDelete));
   };
 
   const newContactList = () => {
@@ -50,7 +56,7 @@ export function App() {
         <ContactForm onSubmit={handleSubmit} />
 
         <TitleContact>Contacts</TitleContact>
-        <Filter onFilter={setFilter} />
+        <Filter />
         <ContactList contacts={list} onDelete={deleteContact} />
       </FormWrap>
     </div>
