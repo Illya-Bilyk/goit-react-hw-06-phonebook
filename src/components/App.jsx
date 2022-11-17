@@ -47,7 +47,6 @@ export function App() {
         <TitleContact>Contacts</TitleContact>
         <Filter />
         <ContactList contacts={list} onDelete={deleteContact} />
-        <h1>Git VS Code</h1>
       </FormWrap>
     </div>
   );
